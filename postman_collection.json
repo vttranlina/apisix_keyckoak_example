@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "bdd9279b-7361-41f5-aae9-ed8db52502fd",
+		"name": "Apisix",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7662595"
+	},
+	"item": [
+		{
+			"name": "Add new route",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-API-KEY",
+						"value": "edd1c9f034335f136f87ad84b625c8f1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"uri\":\"/anything/*\",\n    \"plugins\": {\n        \"openid-connect\": {\n            \"client_id\": \"myclient\",\n            \"client_secret\": \"ojcUDMAqLCNyMHRq42ZXPrppYAf2csox\",\n            \"discovery\": \"http://keycloak:8080/realms/myrealm/.well-known/openid-configuration\",\n            \"scope\": \"openid profile\",\n            \"bearer_only\": false,\n            \"realm\": \"myrealm\",\n            \"redirect_uri\": \"http://127.0.0.1:9080/anything/callback\",\n            \"logout_path\": \"/anything/logout\"\n        }\n    },\n    \"upstream\":{\n        \"type\":\"roundrobin\",\n        \"nodes\":{\n            \"httpbin.org:80\":1\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:9180/apisix/admin/routes/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "9180",
+					"path": [
+						"apisix",
+						"admin",
+						"routes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Keycloak Get UserInfo",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "tokenName",
+							"value": "keycloakToken",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://172.18.0.9:8080/realms/myrealm/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "email profile",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "tung",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "tung",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "d7DPTXVIk9JCJPaqnc5bCyW8Pj90J4Cy",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "myclient",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://172.18.0.9:8080/realms/myrealm/protocol/openid-connect/userinfo",
+					"protocol": "http",
+					"host": [
+						"172",
+						"18",
+						"0",
+						"9"
+					],
+					"port": "8080",
+					"path": [
+						"realms",
+						"myrealm",
+						"protocol",
+						"openid-connect",
+						"userinfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Route",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-API-KEY",
+						"value": "edd1c9f034335f136f87ad84b625c8f1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"uri\":\"/get\",\n    \"plugins\": {\n        \"openid-connect\": {\n            \"client_id\": \"myclient\",\n            \"client_secret\": \"d7DPTXVIk9JCJPaqnc5bCyW8Pj90J4Cy\",\n            \"discovery\": \"http://172.18.0.9:8080/realms/myrealm/.well-known/openid-configuration\",\n            \"bearer_only\": true,\n            \"realm\": \"myrealm\",\n            \"introspection_endpoint\": \"http://172.18.0.9:8080/realms/myrealm/protocol/openid-connect/token/introspect\",\n            \"introspection_endpoint_auth_method\": \"client_secret_basic\"\n        }\n    },\n    \"upstream\":{\n        \"type\":\"roundrobin\",\n        \"nodes\":{\n            \"httpbin.org:80\":1\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:9180/apisix/admin/routes/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "9180",
+					"path": [
+						"apisix",
+						"admin",
+						"routes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Keycloak Logout",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "d7DPTXVIk9JCJPaqnc5bCyW8Pj90J4Cy",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "myclient",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "myclient",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "d7DPTXVIk9JCJPaqnc5bCyW8Pj90J4Cy",
+							"type": "text"
+						},
+						{
+							"key": "refresh_token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJkZDhlNDdkYS05NWY1LTRhMDgtYmEwZC02OTUyNjAxZTdmYWUifQ.eyJleHAiOjE2ODEwNjA0MzcsImlhdCI6MTY4MTA1ODYzNywianRpIjoiNTZhNmNmMGUtNTlkMy00MmU1LWE2YmMtYjFhYTQ4MWI5NWEwIiwiaXNzIjoiaHR0cDovLzE3Mi4xOC4wLjk6ODA4MC9yZWFsbXMvbXlyZWFsbSIsImF1ZCI6Imh0dHA6Ly8xNzIuMTguMC45OjgwODAvcmVhbG1zL215cmVhbG0iLCJzdWIiOiIwMGIyNDJkYy1lYWJlLTQ3NGItYTg4NC1jMDEwZGNiMjhmM2IiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoibXljbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiNDhiZjY0MGYtNzk4NS00YzQ3LWE5NWEtZjIyZmYyNTQ3NmUyIiwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwic2lkIjoiNDhiZjY0MGYtNzk4NS00YzQ3LWE5NWEtZjIyZmYyNTQ3NmUyIn0.XV6agL2cI7xNn32yjYTxcxnKZB-0k8A-wAussIcujX8",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://172.18.0.9:8080/realms/myrealm/protocol/openid-connect/logout",
+					"protocol": "http",
+					"host": [
+						"172",
+						"18",
+						"0",
+						"9"
+					],
+					"port": "8080",
+					"path": [
+						"realms",
+						"myrealm",
+						"protocol",
+						"openid-connect",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Keycloak Introspect token",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "d7DPTXVIk9JCJPaqnc5bCyW8Pj90J4Cy",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "myclient",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJBLXhJazV4YUtZNXAzVjBFcUIyQ3NCNjIzallwajJzcDFGZFdjZDlMWlBvIn0.eyJleHAiOjE2ODEwNTc4MTUsImlhdCI6MTY4MTA1NzUxNSwianRpIjoiNzJiMWNkNzYtZDAzZi00MGYzLTg4ZjEtMWNjNjJkODg5NjRiIiwiaXNzIjoiaHR0cDovLzE3Mi4xOC4wLjk6ODA4MC9yZWFsbXMvbXlyZWFsbSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIwMGIyNDJkYy1lYWJlLTQ3NGItYTg4NC1jMDEwZGNiMjhmM2IiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJteWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiJmYWNhZWU0Zi1lZWE5LTQwYTctOTNhNS1jNjI1OTQwYjIzZmMiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtbXlyZWFsbSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiJmYWNhZWU0Zi1lZWE5LTQwYTctOTNhNS1jNjI1OTQwYjIzZmMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJUdW5nIFRyYW4iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0dW5nIiwiZ2l2ZW5fbmFtZSI6IlR1bmciLCJmYW1pbHlfbmFtZSI6IlRyYW4ifQ.Jo3ACEaZEfwhBsEJARg-8_uFbclIWFOlsxMB86dZd9Z1z6VpOkdN5xKr413BJXsiwbgyKLj6w80ADVEqQSIOTZYhTy0fgWw6iUCvea9E34rZtwXGO8NzCXQoQhEhnTLS9u0FXKlWG0m7zOnXPXwuu525xlP0eTRB1noGvKjbTuPlcMyE-nLXr85aY6eIRKch3z3MPaW15rfb4AXVVvND0Rf9M3P0gKSjeO6mj79TK3c3uM1uNYqZ8zwBCmqivyLywuxs3DfFssdQz6Bs8Of_NdSq8sozXFBCBKqm2yvMHiwbVc1nQgTk2lRoirqOaFv1-Rg5kHDyfecfeE478OMbQg",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://172.18.0.9:8080/realms/myrealm/protocol/openid-connect/token/introspect",
+					"protocol": "http",
+					"host": [
+						"172",
+						"18",
+						"0",
+						"9"
+					],
+					"port": "8080",
+					"path": [
+						"realms",
+						"myrealm",
+						"protocol",
+						"openid-connect",
+						"token",
+						"introspect"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
